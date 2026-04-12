@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}About - DiaPredict AI{% endblock %}
+
+{% block head %}
+<style>
+    .about-container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        backdrop-filter: blur(15px);
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        line-height: 1.7;
+    }
+
+    .about-container h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        background: linear-gradient(45deg, #00f2fe, #4facfe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 15px;
+    }
+
+    .about-container h2 {
+        color: #eee;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .about-container p {
+        color: #bbb;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+
+    .model-metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .metric-item {
+        background: rgba(0,0,0,0.3);
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 4px solid var(--primary);
+    }
+    
+    .metric-item strong {
+        color: white;
+        display: block;
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <h1>About Our Diabetes Model</h1>
+    
+    <p>The DiaPredict application utilizes a machine learning model trained on the standard Pima Indians Diabetes Database. The objective of the dataset is to diagnostically predict whether or not a patient has diabetes, based on certain diagnostic measurements included in the dataset.</p>
+
+    <h2>🔬 How It Works</h2>
+    <p>Our backend relies on a trained predictive model (typically a Random Forest or Support Vector Machine) saved as a serialized object (`model.pkl`). Upon submitting your metrics on the prediction page, the system rapidly classifies the inputs to determine the risk factor associated with the provided biometric data.</p>
+
+    <h2>📊 Required Diagnostic Measurements</h2>
+    <div class="model-metrics">
+        <div class="metric-item">
+            <strong>Glucose Level</strong>
+            Plasma glucose concentration a 2 hours in an oral glucose tolerance test.
+        </div>
+        <div class="metric-item">
+            <strong>Blood Pressure</strong>
+            Diastolic blood pressure (mm Hg).
+        </div>
+        <div class="metric-item">
+            <strong>BMI (Body Mass Index)</strong>
+            Weight in kg/(height in m)^2.
+        </div>
+        <div class="metric-item">
+            <strong>Diabetes Pedigree Function</strong>
+            A function which scores likelihood of diabetes based on family history.
+        </div>
+        <div class="metric-item">
+            <strong>Insulin Level</strong>
+            2-Hour serum insulin (mu U/ml).
+        </div>
+        <div class="metric-item">
+            <strong>Age & Others</strong>
+            General biometrics like pregnancies and skin thickness.
+        </div>
+    </div>
+</div>
+{% endblock %}

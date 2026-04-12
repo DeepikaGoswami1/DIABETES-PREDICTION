@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %}Predict - DiaPredict AI{% endblock %}
+
+{% block head %}
+<style>
+    .pred-container {
+        width: 480px;
+        padding: 40px;
+        border-radius: 20px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.1);
+        border: 1px solid var(--glass-border);
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        animation: slideUp 0.8s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pred-container:hover {
+        transform: rotateY(2deg) rotateX(2deg) scale(1.02);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 800;
+        font-size: 2rem;
+        background: linear-gradient(45deg, #00f2fe, #4facfe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .input-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    /* Form Fields */
+    .input-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-group label {
+        font-size: 0.85rem;
+        margin-bottom: 5px;
+        color: #ddd;
+        margin-left: 5px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        color: white;
+        font-size: 14px;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    input::placeholder {
+        color: #777;
+    }
+
+    input:focus, input:hover {
+        border-color: var(--primary);
+        box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Button */
+    button {
+        width: 100%;
+        padding: 15px;
+        margin-top: 25px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(45deg, var(--secondary), var(--primary));
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        transition: 0.4s;
+        box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 242, 254, 0.6);
+    }
+
+    /* Result */
+    .result {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 15px;
+        border-radius: 12px;
+        background: rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.1);
+        animation: glow 2s infinite alternate;
+    }
+
+    .text-risk {
+        color: #ff4757;
+        text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+    }
+
+    .text-safe {
+        color: #2ed573;
+        text-shadow: 0 0 10px rgba(46, 213, 115, 0.5);
+    }
+
+    @keyframes glow {
+        from { box-shadow: 0 0 10px rgba(0,242,254,0.1); }
+        to { box-shadow: 0 0 20px rgba(0,242,254,0.4); }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 500px) {
+        .input-grid {
+            grid-template-columns: 1fr;
+        }
+        .pred-container {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pred-container">
+    <h2>Get Assessment</h2>
+    
+    <form action="/predict" method="post">
+        
+        <div class="input-grid">
+            <div class="input-group">
+                <label>Pregnancies</label>
+                <input type="number" name="Pregnancies" placeholder="e.g. 1" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Glucose Level</label>
+                <input type="number" name="Glucose" placeholder="e.g. 120" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Blood Pressure</label>
+                <input type="number" name="BloodPressure" placeholder="e.g. 70" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Skin Thickness</label>
+                <input type="number" name="SkinThickness" placeholder="e.g. 20" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Insulin Level</label>
+                <input type="number" name="Insulin" placeholder="e.g. 80" required>
+            </div>
+            
+            <div class="input-group">
+                <label>BMI</label>
+                <input type="number" step="any" name="BMI" placeholder="e.g. 25.5" required>
+            </div>
+            
+            <div class="input-group" style="grid-column: 1 / -1;">
+                <label>Diabetes Pedigree Function</label>
+                <input type="number" step="any" name="DPF" placeholder="e.g. 0.5" required>
+            </div>
+            
+            <div class="input-group" style="grid-column: 1 / -1;">
+                <label>Age</label>
+                <input type="number" name="Age" placeholder="e.g. 30" required>
+            </div>
+        </div>
+
+        <button type="submit">Analyze Metrics</button>
+    </form>
+
+    {% if prediction_text %}
+    <div class="result {{ result_class }}">
+        {{ prediction_text }}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
